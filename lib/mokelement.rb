@@ -77,7 +77,7 @@ module Mok
 
   class Quote < Element
     def apply
-      "#{@contents}"
+      "<Quote>#{@contents.map{|c|c.apply}}</Quote>\n"
     end
   end
 

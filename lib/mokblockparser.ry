@@ -1,7 +1,7 @@
 # Copyright (C) garin <garin54@gmail.com> 2011
 # See the included file COPYING for details.
 class BlockParser
-  token HEADER WHITELINE HEADLINE PLAIN DESCLINE_TITLE DESCLINE PREFORMAT INDENT DEDENT ITEMLIST ITEMLISTCONTINUE NUMLIST TABLELINE
+  token HEADER WHITELINE HEADLINE PLAIN DESCLINE_TITLE DESCLINE PREFORMAT QUOTE INDENT DEDENT ITEMLIST ITEMLISTCONTINUE NUMLIST TABLELINE
   preclow
     nonassoc DUMMY
   prechigh
@@ -16,6 +16,7 @@ class BlockParser
   block : header
         | paragraph { val[0] }
         | preformat_block
+        | quote_block
         | itemlist_blocks { ItemList.new(val[0].flatten) }
         | numlist_blocks  { NumList.new(val[0].flatten) }
         | desc_block
@@ -74,6 +75,13 @@ class BlockParser
               | preformats PREFORMAT { val[0] + val[1] }
 
   # ----- preformat end
+  # ----- quote
+  quote_block : quotes { qu = val[0].strip  ; Quote.new(@inline_parser.parse(qu)) unless qu.empty? }
+
+  quotes      : QUOTE { val[0] }
+              | quotes QUOTE { val[0] + val[1] }
+  # ----- quote end
+
   # ----- itemlist
   itemlist_blocks : itemlist_block { val[0] }
                   | itemlist_blocks itemlist_block { val[0] << val[1] }
@@ -186,6 +194,9 @@ def next_token
       if @current_type == :preformat
         puts "b: :PREFORMAT: #{@line.content}" if @view_token_type
         [:PREFORMAT, "\n"]
+      elsif @current_type == :quote
+        puts "b: :QUOTE: #{@line.content}" if @view_token_type
+        [:QUOTE, "\n"]
       elsif @current_type == :descline
         puts "b: DESCLINE: #{@line.content}" if @view_token_type
         [:DESCLINE, " "]
@@ -270,6 +281,13 @@ def next_token
         puts "b: PREFORMAT: #{$1}" if @view_token_type
         [:PREFORMAT, @line.content.sub("  ","")]
       end
+    end
+  when /^>\s(.*)/    # type == quote
+    puts "b: 2 WHITE SPACE(#{@current_type}) : #{@line.content}" if @view_token_type
+    @current_type = :quote
+    puts "b: QUOTE: #{$1}" if @view_token_type
+    if_current_indent_equal(@line.indent) do
+      [:QUOTE, @line.content.sub("> ","")]
     end
   when /^(\:)(.*)/ # type = desclist
    if_current_indent_equal(@line.indent) do

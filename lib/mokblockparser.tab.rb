@@ -15,7 +15,7 @@ module Mok
 
 class BlockParser < Racc::Parser
 
-module_eval(<<'...end mokblockparser.ry/module_eval...', 'mokblockparser.ry', 120)
+module_eval(<<'...end mokblockparser.ry/module_eval...', 'mokblockparser.ry', 128)
 include ParserUtility
 
 class Line
@@ -85,6 +85,9 @@ def next_token
       if @current_type == :preformat
         puts "b: :PREFORMAT: #{@line.content}" if @view_token_type
         [:PREFORMAT, "\n"]
+      elsif @current_type == :quote
+        puts "b: :QUOTE: #{@line.content}" if @view_token_type
+        [:QUOTE, "\n"]
       elsif @current_type == :descline
         puts "b: DESCLINE: #{@line.content}" if @view_token_type
         [:DESCLINE, " "]
@@ -170,6 +173,13 @@ def next_token
         [:PREFORMAT, @line.content.sub("  ","")]
       end
     end
+  when /^>\s(.*)/    # type == quote
+    puts "b: 2 WHITE SPACE(#{@current_type}) : #{@line.content}" if @view_token_type
+    @current_type = :quote
+    puts "b: QUOTE: #{$1}" if @view_token_type
+    if_current_indent_equal(@line.indent) do
+      [:QUOTE, @line.content.sub("> ","")]
+    end
   when /^(\:)(.*)/ # type = desclist
    if_current_indent_equal(@line.indent) do
       @current_type = :descline
@@ -237,108 +247,116 @@ end
 ##### State transition tables begin ###
 
 racc_action_table = [
-    13,    12,    14,    16,    17,    46,    19,    23,    35,    25,
-    25,    29,    31,    13,    12,    14,    16,    17,    25,    19,
-    23,    47,    25,    37,    29,    31,    23,    29,    25,    37,
-    29,    37,    52,    29,    48,    29,    35,    51,    25,    35,
-    49,    25,    41,    40,    50,    38,    32,    53 ]
+    14,    13,    15,    17,    18,    40,    20,    22,    26,    32,
+    28,    52,    32,    34,    14,    13,    15,    17,    18,    40,
+    20,    22,    26,    32,    28,    41,    32,    34,    40,    56,
+    50,    26,    32,    28,    38,    32,    28,    38,    55,    28,
+    38,    51,    28,    28,    53,    43,    45,    54,    44,    35,
+    57 ]
 
 racc_action_check = [
-     0,     0,     0,     0,     0,    25,     0,     0,    35,     0,
-    35,     0,     0,     2,     2,     2,     2,     2,    21,     2,
-     2,    27,     2,     8,     2,     2,    23,     8,    23,    37,
-    23,    44,    44,    37,    30,    44,    43,    43,    43,     7,
-    32,     7,    18,    17,    39,    15,     1,    45 ]
+     0,     0,     0,     0,     0,    40,     0,     0,     0,    40,
+     0,    33,     0,     0,     2,     2,     2,     2,     2,     9,
+     2,     2,     2,     9,     2,    16,     2,     2,    48,    48,
+    28,    26,    48,    26,    38,    26,    38,    47,    47,    47,
+     8,    30,     8,    24,    35,    18,    21,    42,    19,     1,
+    49 ]
 
 racc_action_pointer = [
-    -2,    46,    11,   nil,   nil,   nil,   nil,    30,    14,   nil,
-   nil,   nil,   nil,   nil,   nil,    40,   nil,    36,    34,   nil,
-   nil,     7,   nil,    17,   nil,    -7,   nil,     8,   nil,   nil,
-    20,   nil,    40,   nil,   nil,    -1,   nil,    20,   nil,    37,
-   nil,   nil,   nil,    27,    22,    35,   nil,   nil,   nil,   nil,
-   nil,   nil,   nil,   nil ]
+    -2,    49,    12,   nil,   nil,   nil,   nil,   nil,    30,     9,
+   nil,   nil,   nil,   nil,   nil,   nil,    20,   nil,    38,    40,
+   nil,    37,   nil,   nil,    31,   nil,    21,   nil,    17,   nil,
+    27,   nil,   nil,    -4,   nil,    44,   nil,   nil,    24,   nil,
+    -5,   nil,    40,   nil,   nil,   nil,   nil,    27,    18,    37,
+   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil ]
 
 racc_action_default = [
-   -46,   -46,    -1,    -2,    -4,    -5,    -6,    -7,    -8,    -9,
-   -10,   -11,   -12,   -13,   -14,   -15,   -16,   -21,   -22,   -23,
-   -25,   -27,   -28,   -46,   -30,   -32,   -36,   -38,   -39,   -41,
-   -43,   -44,   -46,    -3,   -26,   -46,   -37,   -46,   -17,   -18,
-   -19,   -24,   -31,   -46,   -46,   -33,   -34,   -42,   -45,    54,
-   -20,   -29,   -40,   -35 ]
+   -50,   -50,    -1,    -2,    -4,    -5,    -6,    -7,    -8,    -9,
+   -10,   -11,   -12,   -13,   -14,   -15,   -16,   -17,   -22,   -23,
+   -24,   -26,   -27,   -29,   -31,   -32,   -50,   -34,   -36,   -40,
+   -42,   -43,   -45,   -47,   -48,   -50,    -3,   -30,   -50,   -41,
+   -50,   -18,   -19,   -20,   -25,   -28,   -35,   -50,   -50,   -37,
+   -38,   -46,   -49,    58,   -21,   -33,   -44,   -39 ]
 
 racc_goto_table = [
-    36,    34,    44,    43,     3,    39,    33,     2,    42,    45,
-     1,   nil,   nil,   nil,   nil,    43,    44,   nil,   nil,   nil,
+    39,    37,    48,    47,     3,    42,    36,     2,    46,    49,
+     1,   nil,   nil,   nil,   nil,    47,    48,   nil,   nil,   nil,
    nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,
-   nil,   nil,   nil,   nil,   nil,   nil,    36,    34 ]
+   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,    39,
+    37 ]
 
 racc_goto_check = [
-    20,    15,     8,     7,     3,    13,     3,     2,    18,    19,
-     1,   nil,   nil,   nil,   nil,     7,     8,   nil,   nil,   nil,
+    22,    17,     9,     8,     3,    14,     3,     2,    20,    21,
+     1,   nil,   nil,   nil,   nil,     8,     9,   nil,   nil,   nil,
    nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,
-   nil,   nil,   nil,   nil,   nil,   nil,    20,    15 ]
+   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil,    22,
+    17 ]
 
 racc_goto_pointer = [
-   nil,    10,     7,     4,   nil,   nil,   nil,   -20,   -21,   nil,
-   nil,   nil,   nil,   -12,   nil,    -6,   nil,   nil,   -13,   -16,
-    -8,   nil,   nil,   nil ]
+   nil,    10,     7,     4,   nil,   nil,   nil,   nil,   -23,   -24,
+   nil,   nil,   nil,   nil,   -13,   nil,   nil,    -7,   nil,   nil,
+   -16,   -19,    -9,   nil,   nil,   nil ]
 
 racc_goto_default = [
    nil,   nil,   nil,   nil,     4,     5,     6,     7,     8,     9,
-    10,    11,    15,   nil,    18,    20,    21,    22,    24,   nil,
-    26,    27,    28,    30 ]
+    10,    11,    12,    16,   nil,    19,    21,    23,    24,    25,
+    27,   nil,    29,    30,    31,    33 ]
 
 racc_reduce_table = [
   0, 0, :racc_error,
-  1, 17, :_reduce_1,
-  1, 18, :_reduce_2,
-  2, 18, :_reduce_3,
-  1, 19, :_reduce_none,
-  1, 19, :_reduce_5,
-  1, 19, :_reduce_none,
-  1, 19, :_reduce_7,
-  1, 19, :_reduce_8,
-  1, 19, :_reduce_none,
-  1, 19, :_reduce_none,
-  1, 19, :_reduce_none,
-  1, 19, :_reduce_12,
+  1, 18, :_reduce_1,
+  1, 19, :_reduce_2,
+  2, 19, :_reduce_3,
+  1, 20, :_reduce_none,
+  1, 20, :_reduce_5,
+  1, 20, :_reduce_none,
+  1, 20, :_reduce_none,
+  1, 20, :_reduce_8,
+  1, 20, :_reduce_9,
+  1, 20, :_reduce_none,
+  1, 20, :_reduce_none,
+  1, 20, :_reduce_none,
   1, 20, :_reduce_13,
-  1, 27, :_reduce_14,
-  1, 21, :_reduce_15,
-  1, 28, :_reduce_16,
-  2, 28, :_reduce_17,
-  2, 25, :_reduce_18,
-  1, 29, :_reduce_19,
-  2, 29, :_reduce_20,
-  0, 29, :_reduce_none,
-  1, 22, :_reduce_22,
-  1, 30, :_reduce_23,
-  2, 30, :_reduce_24,
-  1, 23, :_reduce_25,
-  2, 23, :_reduce_26,
-  1, 31, :_reduce_27,
-  1, 31, :_reduce_28,
-  3, 33, :_reduce_29,
-  1, 32, :_reduce_30,
-  2, 32, :_reduce_31,
+  1, 21, :_reduce_14,
+  1, 29, :_reduce_15,
+  1, 22, :_reduce_16,
+  1, 30, :_reduce_17,
+  2, 30, :_reduce_18,
+  2, 27, :_reduce_19,
+  1, 31, :_reduce_20,
+  2, 31, :_reduce_21,
+  0, 31, :_reduce_none,
+  1, 23, :_reduce_23,
+  1, 32, :_reduce_24,
+  2, 32, :_reduce_25,
+  1, 24, :_reduce_26,
+  1, 33, :_reduce_27,
+  2, 33, :_reduce_28,
+  1, 25, :_reduce_29,
+  2, 25, :_reduce_30,
+  1, 34, :_reduce_31,
   1, 34, :_reduce_32,
-  2, 34, :_reduce_33,
+  3, 36, :_reduce_33,
   1, 35, :_reduce_34,
   2, 35, :_reduce_35,
-  1, 24, :_reduce_36,
-  2, 24, :_reduce_37,
-  1, 36, :_reduce_38,
-  1, 36, :_reduce_39,
-  3, 38, :_reduce_40,
-  1, 37, :_reduce_41,
-  2, 37, :_reduce_42,
-  1, 26, :_reduce_43,
-  1, 39, :_reduce_44,
-  2, 39, :_reduce_45 ]
+  1, 37, :_reduce_36,
+  2, 37, :_reduce_37,
+  1, 38, :_reduce_38,
+  2, 38, :_reduce_39,
+  1, 26, :_reduce_40,
+  2, 26, :_reduce_41,
+  1, 39, :_reduce_42,
+  1, 39, :_reduce_43,
+  3, 41, :_reduce_44,
+  1, 40, :_reduce_45,
+  2, 40, :_reduce_46,
+  1, 28, :_reduce_47,
+  1, 42, :_reduce_48,
+  2, 42, :_reduce_49 ]
 
-racc_reduce_n = 46
+racc_reduce_n = 50
 
-racc_shift_n = 54
+racc_shift_n = 58
 
 racc_token_table = {
   false => 0,
@@ -350,15 +368,16 @@ racc_token_table = {
   :DESCLINE_TITLE => 6,
   :DESCLINE => 7,
   :PREFORMAT => 8,
-  :INDENT => 9,
-  :DEDENT => 10,
-  :ITEMLIST => 11,
-  :ITEMLISTCONTINUE => 12,
-  :NUMLIST => 13,
-  :TABLELINE => 14,
-  :DUMMY => 15 }
+  :QUOTE => 9,
+  :INDENT => 10,
+  :DEDENT => 11,
+  :ITEMLIST => 12,
+  :ITEMLISTCONTINUE => 13,
+  :NUMLIST => 14,
+  :TABLELINE => 15,
+  :DUMMY => 16 }
 
-racc_nt_base = 16
+racc_nt_base = 17
 
 racc_use_result_var = false
 
@@ -388,6 +407,7 @@ Racc_token_to_s_table = [
   "DESCLINE_TITLE",
   "DESCLINE",
   "PREFORMAT",
+  "QUOTE",
   "INDENT",
   "DEDENT",
   "ITEMLIST",
@@ -402,6 +422,7 @@ Racc_token_to_s_table = [
   "header",
   "paragraph",
   "preformat_block",
+  "quote_block",
   "itemlist_blocks",
   "numlist_blocks",
   "desc_block",
@@ -410,6 +431,7 @@ Racc_token_to_s_table = [
   "plain_texts",
   "desclines",
   "preformats",
+  "quotes",
   "itemlist_block",
   "itemlists",
   "itemlist_indent_blocks",
@@ -454,32 +476,34 @@ module_eval(<<'.,.,', 'mokblockparser.ry', 16)
 
 # reduce 6 omitted
 
-module_eval(<<'.,.,', 'mokblockparser.ry', 18)
-  def _reduce_7(val, _values)
+# reduce 7 omitted
+
+module_eval(<<'.,.,', 'mokblockparser.ry', 19)
+  def _reduce_8(val, _values)
      ItemList.new(val[0].flatten) 
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokblockparser.ry', 19)
-  def _reduce_8(val, _values)
+module_eval(<<'.,.,', 'mokblockparser.ry', 20)
+  def _reduce_9(val, _values)
      NumList.new(val[0].flatten) 
   end
 .,.,
-
-# reduce 9 omitted
 
 # reduce 10 omitted
 
 # reduce 11 omitted
 
-module_eval(<<'.,.,', 'mokblockparser.ry', 23)
-  def _reduce_12(val, _values)
+# reduce 12 omitted
+
+module_eval(<<'.,.,', 'mokblockparser.ry', 24)
+  def _reduce_13(val, _values)
      WhiteLine.new 
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokblockparser.ry', 27)
-  def _reduce_13(val, _values)
+module_eval(<<'.,.,', 'mokblockparser.ry', 28)
+  def _reduce_14(val, _values)
                  name, val = val[0].split(":",2)
              if name.nil? or val.nil?
              else
@@ -489,8 +513,8 @@ module_eval(<<'.,.,', 'mokblockparser.ry', 27)
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokblockparser.ry', 35)
-  def _reduce_14(val, _values)
+module_eval(<<'.,.,', 'mokblockparser.ry', 36)
+  def _reduce_15(val, _values)
      # val[0] is like [level, title, index]
                         title = val[0][1]
                         level = val[0][0]
@@ -506,26 +530,26 @@ module_eval(<<'.,.,', 'mokblockparser.ry', 35)
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokblockparser.ry', 48)
-  def _reduce_15(val, _values)
-     Paragraph.new @inline_parser.parse(val) 
-  end
-.,.,
-
-module_eval(<<'.,.,', 'mokblockparser.ry', 50)
+module_eval(<<'.,.,', 'mokblockparser.ry', 49)
   def _reduce_16(val, _values)
-     val[0] 
+     Paragraph.new @inline_parser.parse(val) 
   end
 .,.,
 
 module_eval(<<'.,.,', 'mokblockparser.ry', 51)
   def _reduce_17(val, _values)
+     val[0] 
+  end
+.,.,
+
+module_eval(<<'.,.,', 'mokblockparser.ry', 52)
+  def _reduce_18(val, _values)
      val[0] + val[1] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokblockparser.ry', 55)
-  def _reduce_18(val, _values)
+module_eval(<<'.,.,', 'mokblockparser.ry', 56)
+  def _reduce_19(val, _values)
                      if val[1].nil?
                    lines = [Plain.new("")]
                  else
@@ -536,47 +560,41 @@ module_eval(<<'.,.,', 'mokblockparser.ry', 55)
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokblockparser.ry', 64)
-  def _reduce_19(val, _values)
+module_eval(<<'.,.,', 'mokblockparser.ry', 65)
+  def _reduce_20(val, _values)
      val[0] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokblockparser.ry', 65)
-  def _reduce_20(val, _values)
+module_eval(<<'.,.,', 'mokblockparser.ry', 66)
+  def _reduce_21(val, _values)
      val[0] + val[1] 
   end
 .,.,
 
-# reduce 21 omitted
+# reduce 22 omitted
 
-module_eval(<<'.,.,', 'mokblockparser.ry', 70)
-  def _reduce_22(val, _values)
-     pr = val[0].strip  ; Preformat.new([pr]) unless pr.empty? 
-  end
-.,.,
-
-module_eval(<<'.,.,', 'mokblockparser.ry', 72)
+module_eval(<<'.,.,', 'mokblockparser.ry', 71)
   def _reduce_23(val, _values)
-     val[0] 
+     pr = val[0].strip  ; Preformat.new([pr]) unless pr.empty? 
   end
 .,.,
 
 module_eval(<<'.,.,', 'mokblockparser.ry', 73)
   def _reduce_24(val, _values)
-     val[0] + val[1] 
+     val[0] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokblockparser.ry', 77)
+module_eval(<<'.,.,', 'mokblockparser.ry', 74)
   def _reduce_25(val, _values)
-     val[0] 
+     val[0] + val[1] 
   end
 .,.,
 
 module_eval(<<'.,.,', 'mokblockparser.ry', 78)
   def _reduce_26(val, _values)
-     val[0] << val[1] 
+     qu = val[0].strip  ; Quote.new(@inline_parser.parse(qu)) unless qu.empty? 
   end
 .,.,
 
@@ -588,49 +606,49 @@ module_eval(<<'.,.,', 'mokblockparser.ry', 80)
 
 module_eval(<<'.,.,', 'mokblockparser.ry', 81)
   def _reduce_28(val, _values)
-     val[0]  
-  end
-.,.,
-
-module_eval(<<'.,.,', 'mokblockparser.ry', 83)
-  def _reduce_29(val, _values)
-     val 
+     val[0] + val[1] 
   end
 .,.,
 
 module_eval(<<'.,.,', 'mokblockparser.ry', 85)
-  def _reduce_30(val, _values)
-    [PlainTextBlock.new(@inline_parser.parse(val[0]))]
+  def _reduce_29(val, _values)
+     val[0] 
   end
 .,.,
 
 module_eval(<<'.,.,', 'mokblockparser.ry', 86)
-  def _reduce_31(val, _values)
-     val[0] << PlainTextBlock.new(@inline_parser.parse(val[1])) 
+  def _reduce_30(val, _values)
+     val[0] << val[1] 
   end
 .,.,
 
 module_eval(<<'.,.,', 'mokblockparser.ry', 88)
-  def _reduce_32(val, _values)
+  def _reduce_31(val, _values)
      val[0] 
   end
 .,.,
 
 module_eval(<<'.,.,', 'mokblockparser.ry', 89)
-  def _reduce_33(val, _values)
-     val[0] + val[1] 
+  def _reduce_32(val, _values)
+     val[0]  
   end
 .,.,
 
 module_eval(<<'.,.,', 'mokblockparser.ry', 91)
-  def _reduce_34(val, _values)
-     "\n" + val[0]  
+  def _reduce_33(val, _values)
+     val 
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokblockparser.ry', 92)
+module_eval(<<'.,.,', 'mokblockparser.ry', 93)
+  def _reduce_34(val, _values)
+    [PlainTextBlock.new(@inline_parser.parse(val[0]))]
+  end
+.,.,
+
+module_eval(<<'.,.,', 'mokblockparser.ry', 94)
   def _reduce_35(val, _values)
-     val[0] + "\n" + val[1] 
+     val[0] << PlainTextBlock.new(@inline_parser.parse(val[1])) 
   end
 .,.,
 
@@ -642,54 +660,78 @@ module_eval(<<'.,.,', 'mokblockparser.ry', 96)
 
 module_eval(<<'.,.,', 'mokblockparser.ry', 97)
   def _reduce_37(val, _values)
-     val[0] << val[1] 
+     val[0] + val[1] 
   end
 .,.,
 
 module_eval(<<'.,.,', 'mokblockparser.ry', 99)
   def _reduce_38(val, _values)
-     val[0] 
+     "\n" + val[0]  
   end
 .,.,
 
 module_eval(<<'.,.,', 'mokblockparser.ry', 100)
   def _reduce_39(val, _values)
-     val[0]  
-  end
-.,.,
-
-module_eval(<<'.,.,', 'mokblockparser.ry', 102)
-  def _reduce_40(val, _values)
-     val 
+     val[0] + "\n" + val[1] 
   end
 .,.,
 
 module_eval(<<'.,.,', 'mokblockparser.ry', 104)
-  def _reduce_41(val, _values)
-     [PlainTextBlock.new(@inline_parser.parse(val[0]))] 
+  def _reduce_40(val, _values)
+     val[0] 
   end
 .,.,
 
 module_eval(<<'.,.,', 'mokblockparser.ry', 105)
+  def _reduce_41(val, _values)
+     val[0] << val[1] 
+  end
+.,.,
+
+module_eval(<<'.,.,', 'mokblockparser.ry', 107)
   def _reduce_42(val, _values)
-     val[0] << PlainTextBlock.new(@inline_parser.parse(val[1])) 
+     val[0] 
+  end
+.,.,
+
+module_eval(<<'.,.,', 'mokblockparser.ry', 108)
+  def _reduce_43(val, _values)
+     val[0]  
   end
 .,.,
 
 module_eval(<<'.,.,', 'mokblockparser.ry', 110)
-  def _reduce_43(val, _values)
-     Table.new(val[0]) 
+  def _reduce_44(val, _values)
+     val 
   end
 .,.,
 
 module_eval(<<'.,.,', 'mokblockparser.ry', 112)
-  def _reduce_44(val, _values)
-      val 
+  def _reduce_45(val, _values)
+     [PlainTextBlock.new(@inline_parser.parse(val[0]))] 
   end
 .,.,
 
 module_eval(<<'.,.,', 'mokblockparser.ry', 113)
-  def _reduce_45(val, _values)
+  def _reduce_46(val, _values)
+     val[0] << PlainTextBlock.new(@inline_parser.parse(val[1])) 
+  end
+.,.,
+
+module_eval(<<'.,.,', 'mokblockparser.ry', 118)
+  def _reduce_47(val, _values)
+     Table.new(val[0]) 
+  end
+.,.,
+
+module_eval(<<'.,.,', 'mokblockparser.ry', 120)
+  def _reduce_48(val, _values)
+      val 
+  end
+.,.,
+
+module_eval(<<'.,.,', 'mokblockparser.ry', 121)
+  def _reduce_49(val, _values)
      val[0] << val[1] 
   end
 .,.,
