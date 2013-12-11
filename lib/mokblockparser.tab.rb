@@ -82,9 +82,9 @@ def next_token
   when /^$/
     @line.content = ""
     if_current_indent_equal("") do
-      if @current_type == :quote
-        puts "b: QUOTE: #{@line.content}" if @view_token_type
-        [:QUOTE, "\n"]
+      if @current_type == :preformat
+        puts "b: :PREFORMAT: #{@line.content}" if @view_token_type
+        [:PREFORMAT, "\n"]
       elsif @current_type == :descline
         puts "b: DESCLINE: #{@line.content}" if @view_token_type
         [:DESCLINE, " "]
@@ -113,7 +113,7 @@ def next_token
       puts "b: HEADLINE: #{@line.content}" if @view_token_type
       [:HEADLINE, [mark_to_level(mark), rest]]
     end
-  when /^\s\s+(.*)/    # type == quote
+  when /^\s\s+(.*)/    # type == preformat
     puts "b: 2 WHITE SPACE(#{@current_type}) : #{@line.content}" if @view_token_type
     case @current_type
     when :itemlist
@@ -165,9 +165,9 @@ def next_token
         puts "b: DESCLINE: #{@line.content}" if @view_token_type
         [:DESCLINE, $1 + "\n"]
       else
-        @current_type = :quote
-        puts "b: QUOTE: #{$1}" if @view_token_type
-        [:QUOTE, @line.content.sub("  ","")]
+        @current_type = :preformat
+        puts "b: PREFORMAT: #{$1}" if @view_token_type
+        [:PREFORMAT, @line.content.sub("  ","")]
       end
     end
   when /^(\:)(.*)/ # type = desclist
@@ -349,7 +349,7 @@ racc_token_table = {
   :PLAIN => 5,
   :DESCLINE_TITLE => 6,
   :DESCLINE => 7,
-  :QUOTE => 8,
+  :PREFORMAT => 8,
   :INDENT => 9,
   :DEDENT => 10,
   :ITEMLIST => 11,
@@ -387,7 +387,7 @@ Racc_token_to_s_table = [
   "PLAIN",
   "DESCLINE_TITLE",
   "DESCLINE",
-  "QUOTE",
+  "PREFORMAT",
   "INDENT",
   "DEDENT",
   "ITEMLIST",
@@ -401,7 +401,7 @@ Racc_token_to_s_table = [
   "block",
   "header",
   "paragraph",
-  "quote_block",
+  "preformat_block",
   "itemlist_blocks",
   "numlist_blocks",
   "desc_block",
@@ -409,7 +409,7 @@ Racc_token_to_s_table = [
   "headline",
   "plain_texts",
   "desclines",
-  "quotes",
+  "preformats",
   "itemlist_block",
   "itemlists",
   "itemlist_indent_blocks",
@@ -552,7 +552,7 @@ module_eval(<<'.,.,', 'mokblockparser.ry', 65)
 
 module_eval(<<'.,.,', 'mokblockparser.ry', 70)
   def _reduce_22(val, _values)
-     qu = val[0].strip  ; Quote.new([qu]) unless qu.empty? 
+     pr = val[0].strip  ; Preformat.new([pr]) unless pr.empty? 
   end
 .,.,
 

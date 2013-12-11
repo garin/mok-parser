@@ -1,7 +1,7 @@
 # Copyright (C) garin <garin54@gmail.com> 2011
 # See the included file COPYING for details.
 class BlockParser
-  token HEADER WHITELINE HEADLINE PLAIN DESCLINE_TITLE DESCLINE QUOTE INDENT DEDENT ITEMLIST ITEMLISTCONTINUE NUMLIST TABLELINE
+  token HEADER WHITELINE HEADLINE PLAIN DESCLINE_TITLE DESCLINE PREFORMAT INDENT DEDENT ITEMLIST ITEMLISTCONTINUE NUMLIST TABLELINE
   preclow
     nonassoc DUMMY
   prechigh
@@ -15,7 +15,7 @@ class BlockParser
 
   block : header
         | paragraph { val[0] }
-        | quote_block
+        | preformat_block
         | itemlist_blocks { ItemList.new(val[0].flatten) }
         | numlist_blocks  { NumList.new(val[0].flatten) }
         | desc_block
@@ -67,13 +67,13 @@ class BlockParser
             |
 
 
-  # ----- quote
-  quote_block : quotes { qu = val[0].strip  ; Quote.new([qu]) unless qu.empty? }
+  # ----- preformat
+  preformat_block : preformats { pr = val[0].strip  ; Preformat.new([pr]) unless pr.empty? }
 
-  quotes      : QUOTE { val[0] }
-              | quotes QUOTE { val[0] + val[1] }
+  preformats  : PREFORMAT { val[0] }
+              | preformats PREFORMAT { val[0] + val[1] }
 
-  # ----- quote end
+  # ----- preformat end
   # ----- itemlist
   itemlist_blocks : itemlist_block { val[0] }
                   | itemlist_blocks itemlist_block { val[0] << val[1] }
@@ -183,9 +183,9 @@ def next_token
   when /^$/
     @line.content = ""
     if_current_indent_equal("") do
-      if @current_type == :quote
-        puts "b: QUOTE: #{@line.content}" if @view_token_type
-        [:QUOTE, "\n"]
+      if @current_type == :preformat
+        puts "b: :PREFORMAT: #{@line.content}" if @view_token_type
+        [:PREFORMAT, "\n"]
       elsif @current_type == :descline
         puts "b: DESCLINE: #{@line.content}" if @view_token_type
         [:DESCLINE, " "]
@@ -214,7 +214,7 @@ def next_token
       puts "b: HEADLINE: #{@line.content}" if @view_token_type
       [:HEADLINE, [mark_to_level(mark), rest]]
     end
-  when /^\s\s+(.*)/    # type == quote
+  when /^\s\s+(.*)/    # type == preformat
     puts "b: 2 WHITE SPACE(#{@current_type}) : #{@line.content}" if @view_token_type
     case @current_type
     when :itemlist
@@ -266,9 +266,9 @@ def next_token
         puts "b: DESCLINE: #{@line.content}" if @view_token_type
         [:DESCLINE, $1 + "\n"]
       else
-        @current_type = :quote
-        puts "b: QUOTE: #{$1}" if @view_token_type
-        [:QUOTE, @line.content.sub("  ","")]
+        @current_type = :preformat
+        puts "b: PREFORMAT: #{$1}" if @view_token_type
+        [:PREFORMAT, @line.content.sub("  ","")]
       end
     end
   when /^(\:)(.*)/ # type = desclist

@@ -81,6 +81,12 @@ module Mok
     end
   end
 
+  class Preformat < Element
+    def apply
+      "<Preformat>#{@contents}</Preformat>"
+    end
+  end
+
   class ItemList < Element
     def apply
       str = "<ItemList>"
