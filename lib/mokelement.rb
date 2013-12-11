@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) garin <garin54@gmail.com> 2011
 # See the included file COPYING for details.
-# = RafObject
-module Raf
+# = MokObject
+module Mok
   class HeadIndex
     def initialize
       @head_index = []
@@ -34,7 +34,7 @@ module Raf
     end
   end
 end
-module Raf
+module Mok
   class Element
     def initialize(contents = "")
       @contents = Array(contents)
@@ -158,7 +158,7 @@ module Raf
   class Label < Element
     # @contents = [label, title, id]
     def apply
-#      "#{@contents[1]}(#{@contents[0]}) raf-label-#{@contents[2]}"
+#      "#{@contents[1]}(#{@contents[0]}) mok-label-#{@contents[2]}"
       "#{@contents[1]}(#{@contents[0]}):#{@contents[2]}"
     end
   end

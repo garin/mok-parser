@@ -520,17 +520,17 @@ require "parserutility"
 require 'strscan'
 require 'mimemagic'
 require 'erb'
-require 'rafelement'
+require 'mokelement'
 
-module Raf
+module Mok
 ---- footer
   if __FILE__ == $0
-    raf = InlineParser.new
+    mok = InlineParser.new
     src = $stdin.readline
-    nodes = raf.parse(src)
+    nodes = mok.parse(src)
     puts "----- output -----"
     nodes.each do |n|
       puts n.apply
     end
   end
-end # end of module Raf
+end # end of module Mok

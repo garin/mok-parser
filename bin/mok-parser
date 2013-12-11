@@ -3,15 +3,15 @@
 # Copyright (C) garin <garin54@gmail.com> 2011-2013
 # See the included file COPYING for details.
 $:.unshift File.join(File.dirname(__FILE__), "../lib")
-require "raf-parser"
+require "mok-parser"
 require "optparse"
 
 opt = OptionParser.new do |opt|
-  opt.version = Raf::VERSION
-  opt.release = Raf::RELEASE
+  opt.version = Mok::VERSION
+  opt.release = Mok::RELEASE
   opt.banner = <<EOL
-"raf" is simple document format.
-Read more: https://github.com/garin/raf-parser
+"mok" is simple document format.
+Read more: https://github.com/garin/mok-parser
 EOL
 end
 

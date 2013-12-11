@@ -7,15 +7,15 @@
 require 'racc/parser.rb'
 
 require "parserutility"
-require "rafinlineparser.tab"
-require "rafelement"
+require "mokinlineparser.tab"
+require "mokelement"
 require "erb"
 
-module Raf
+module Mok
 
 class BlockParser < Racc::Parser
 
-module_eval(<<'...end rafblockparser.ry/module_eval...', 'rafblockparser.ry', 120)
+module_eval(<<'...end mokblockparser.ry/module_eval...', 'mokblockparser.ry', 120)
 include ParserUtility
 
 class Line
@@ -65,7 +65,7 @@ end
 def on_error(token_id, value, stack)
   lineno = @src[0..@no].to_s.split("\n").size
   raise Racc::ParseError,
-        "rafblockpaser: line #{lineno}: syntax error on #{value.inspect}"
+        "mokblockpaser: line #{lineno}: syntax error on #{value.inspect}"
 end
 
 def next_token
@@ -233,7 +233,7 @@ def if_current_indent_equal(ident)
   end
 end
 
-...end rafblockparser.ry/module_eval...
+...end mokblockparser.ry/module_eval...
 ##### State transition tables begin ###
 
 racc_action_table = [
@@ -426,19 +426,19 @@ Racc_debug_parser = false
 
 # reduce 0 omitted
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 10)
+module_eval(<<'.,.,', 'mokblockparser.ry', 10)
   def _reduce_1(val, _values)
      val[0].compact 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 12)
+module_eval(<<'.,.,', 'mokblockparser.ry', 12)
   def _reduce_2(val, _values)
      val 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 13)
+module_eval(<<'.,.,', 'mokblockparser.ry', 13)
   def _reduce_3(val, _values)
      [val[0], val[1]].flatten 
   end
@@ -446,7 +446,7 @@ module_eval(<<'.,.,', 'rafblockparser.ry', 13)
 
 # reduce 4 omitted
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 16)
+module_eval(<<'.,.,', 'mokblockparser.ry', 16)
   def _reduce_5(val, _values)
      val[0] 
   end
@@ -454,13 +454,13 @@ module_eval(<<'.,.,', 'rafblockparser.ry', 16)
 
 # reduce 6 omitted
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 18)
+module_eval(<<'.,.,', 'mokblockparser.ry', 18)
   def _reduce_7(val, _values)
      ItemList.new(val[0].flatten) 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 19)
+module_eval(<<'.,.,', 'mokblockparser.ry', 19)
   def _reduce_8(val, _values)
      NumList.new(val[0].flatten) 
   end
@@ -472,13 +472,13 @@ module_eval(<<'.,.,', 'rafblockparser.ry', 19)
 
 # reduce 11 omitted
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 23)
+module_eval(<<'.,.,', 'mokblockparser.ry', 23)
   def _reduce_12(val, _values)
      WhiteLine.new 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 27)
+module_eval(<<'.,.,', 'mokblockparser.ry', 27)
   def _reduce_13(val, _values)
                  name, val = val[0].split(":",2)
              if name.nil? or val.nil?
@@ -489,7 +489,7 @@ module_eval(<<'.,.,', 'rafblockparser.ry', 27)
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 35)
+module_eval(<<'.,.,', 'mokblockparser.ry', 35)
   def _reduce_14(val, _values)
      # val[0] is like [level, title, index]
                         title = val[0][1]
@@ -506,25 +506,25 @@ module_eval(<<'.,.,', 'rafblockparser.ry', 35)
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 48)
+module_eval(<<'.,.,', 'mokblockparser.ry', 48)
   def _reduce_15(val, _values)
      Paragraph.new @inline_parser.parse(val) 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 50)
+module_eval(<<'.,.,', 'mokblockparser.ry', 50)
   def _reduce_16(val, _values)
      val[0] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 51)
+module_eval(<<'.,.,', 'mokblockparser.ry', 51)
   def _reduce_17(val, _values)
      val[0] + val[1] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 55)
+module_eval(<<'.,.,', 'mokblockparser.ry', 55)
   def _reduce_18(val, _values)
                      if val[1].nil?
                    lines = [Plain.new("")]
@@ -536,13 +536,13 @@ module_eval(<<'.,.,', 'rafblockparser.ry', 55)
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 64)
+module_eval(<<'.,.,', 'mokblockparser.ry', 64)
   def _reduce_19(val, _values)
      val[0] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 65)
+module_eval(<<'.,.,', 'mokblockparser.ry', 65)
   def _reduce_20(val, _values)
      val[0] + val[1] 
   end
@@ -550,145 +550,145 @@ module_eval(<<'.,.,', 'rafblockparser.ry', 65)
 
 # reduce 21 omitted
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 70)
+module_eval(<<'.,.,', 'mokblockparser.ry', 70)
   def _reduce_22(val, _values)
      qu = val[0].strip  ; Quote.new([qu]) unless qu.empty? 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 72)
+module_eval(<<'.,.,', 'mokblockparser.ry', 72)
   def _reduce_23(val, _values)
      val[0] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 73)
+module_eval(<<'.,.,', 'mokblockparser.ry', 73)
   def _reduce_24(val, _values)
      val[0] + val[1] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 77)
+module_eval(<<'.,.,', 'mokblockparser.ry', 77)
   def _reduce_25(val, _values)
      val[0] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 78)
+module_eval(<<'.,.,', 'mokblockparser.ry', 78)
   def _reduce_26(val, _values)
      val[0] << val[1] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 80)
+module_eval(<<'.,.,', 'mokblockparser.ry', 80)
   def _reduce_27(val, _values)
      val[0] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 81)
+module_eval(<<'.,.,', 'mokblockparser.ry', 81)
   def _reduce_28(val, _values)
      val[0]  
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 83)
+module_eval(<<'.,.,', 'mokblockparser.ry', 83)
   def _reduce_29(val, _values)
      val 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 85)
+module_eval(<<'.,.,', 'mokblockparser.ry', 85)
   def _reduce_30(val, _values)
     [PlainTextBlock.new(@inline_parser.parse(val[0]))]
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 86)
+module_eval(<<'.,.,', 'mokblockparser.ry', 86)
   def _reduce_31(val, _values)
      val[0] << PlainTextBlock.new(@inline_parser.parse(val[1])) 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 88)
+module_eval(<<'.,.,', 'mokblockparser.ry', 88)
   def _reduce_32(val, _values)
      val[0] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 89)
+module_eval(<<'.,.,', 'mokblockparser.ry', 89)
   def _reduce_33(val, _values)
      val[0] + val[1] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 91)
+module_eval(<<'.,.,', 'mokblockparser.ry', 91)
   def _reduce_34(val, _values)
      "\n" + val[0]  
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 92)
+module_eval(<<'.,.,', 'mokblockparser.ry', 92)
   def _reduce_35(val, _values)
      val[0] + "\n" + val[1] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 96)
+module_eval(<<'.,.,', 'mokblockparser.ry', 96)
   def _reduce_36(val, _values)
      val[0] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 97)
+module_eval(<<'.,.,', 'mokblockparser.ry', 97)
   def _reduce_37(val, _values)
      val[0] << val[1] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 99)
+module_eval(<<'.,.,', 'mokblockparser.ry', 99)
   def _reduce_38(val, _values)
      val[0] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 100)
+module_eval(<<'.,.,', 'mokblockparser.ry', 100)
   def _reduce_39(val, _values)
      val[0]  
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 102)
+module_eval(<<'.,.,', 'mokblockparser.ry', 102)
   def _reduce_40(val, _values)
      val 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 104)
+module_eval(<<'.,.,', 'mokblockparser.ry', 104)
   def _reduce_41(val, _values)
      [PlainTextBlock.new(@inline_parser.parse(val[0]))] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 105)
+module_eval(<<'.,.,', 'mokblockparser.ry', 105)
   def _reduce_42(val, _values)
      val[0] << PlainTextBlock.new(@inline_parser.parse(val[1])) 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 110)
+module_eval(<<'.,.,', 'mokblockparser.ry', 110)
   def _reduce_43(val, _values)
      Table.new(val[0]) 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 112)
+module_eval(<<'.,.,', 'mokblockparser.ry', 112)
   def _reduce_44(val, _values)
       val 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafblockparser.ry', 113)
+module_eval(<<'.,.,', 'mokblockparser.ry', 113)
   def _reduce_45(val, _values)
      val[0] << val[1] 
   end
@@ -701,19 +701,19 @@ end
 end   # class BlockParser
 
   if __FILE__ == $0
-    raf = BlockParser.new
+    mok = BlockParser.new
     src = $stdin.readlines
-    nodes = raf.parse(src)
+    nodes = mok.parse(src)
     puts "----- index -----"
-    raf.index.each do |key,val|
+    mok.index.each do |key,val|
       puts key
       val.each do |v| p v end
     end
     puts "----- info -----"
-    p raf.info
+    p mok.info
     puts "----- output -----"
     nodes.each do |n|
       puts n.apply
     end
   end
-end # end of module Raf
+end # end of module Mok

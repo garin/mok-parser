@@ -10,12 +10,12 @@ require "parserutility"
 require 'strscan'
 require 'mimemagic'
 require 'erb'
-require 'rafelement'
+require 'mokelement'
 
-module Raf
+module Mok
 class InlineParser < Racc::Parser
 
-module_eval(<<'...end rafinlineparser.ry/module_eval...', 'rafinlineparser.ry', 272)
+module_eval(<<'...end mokinlineparser.ry/module_eval...', 'mokinlineparser.ry', 272)
 include ParserUtility
 
 EM_OPEN = '((*'
@@ -262,7 +262,7 @@ def next_token
   end
 end
 
-...end rafinlineparser.ry/module_eval...
+...end mokinlineparser.ry/module_eval...
 ##### State transition tables begin ###
 
 racc_action_table = [
@@ -743,13 +743,13 @@ Racc_debug_parser = false
 
 # reduce 2 omitted
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 9)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 9)
   def _reduce_3(val, _values)
      val[0].push(val[1]) 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 10)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 10)
   def _reduce_4(val, _values)
      val 
   end
@@ -785,37 +785,37 @@ module_eval(<<'.,.,', 'rafinlineparser.ry', 10)
 
 # reduce 19 omitted
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 29)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 29)
   def _reduce_20(val, _values)
      Emphasis.new(val[1]) 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 30)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 30)
   def _reduce_21(val, _values)
      Italic.new(val[1]) 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 31)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 31)
   def _reduce_22(val, _values)
      Strike.new(val[1]) 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 32)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 32)
   def _reduce_23(val, _values)
      Code.new(val[1]) 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 33)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 33)
   def _reduce_24(val, _values)
      Kbd.new(val[1]) 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 35)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 35)
   def _reduce_25(val, _values)
                    @index[:footnote] ||= []
                @index[:footnote] << {:content => val[1] }
@@ -880,13 +880,13 @@ module_eval(<<'.,.,', 'rafinlineparser.ry', 35)
 
 # reduce 53 omitted
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 72)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 72)
   def _reduce_54(val, _values)
      val.join 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 74)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 74)
   def _reduce_55(val, _values)
     		     unless @options[:media_directory].nil? || @options[:media_directory].empty?
   		       val[0] = File.join(@options[:media_directory],val[0]) unless val[0] =~ /^.*:\/\/.*/
@@ -896,7 +896,7 @@ module_eval(<<'.,.,', 'rafinlineparser.ry', 74)
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 80)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 80)
   def _reduce_56(val, _values)
     	     mime = MimeMagic.by_extension(val[1].split(".").last)
 	     unless mime.nil?
@@ -961,19 +961,19 @@ module_eval(<<'.,.,', 'rafinlineparser.ry', 80)
 
 # reduce 82 omitted
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 118)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 118)
   def _reduce_83(val, _values)
      val.join 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 119)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 119)
   def _reduce_84(val, _values)
      val[0] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 122)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 122)
   def _reduce_85(val, _values)
                       base, text = val[1].split("|",2)
                   text ||= base
@@ -1040,19 +1040,19 @@ module_eval(<<'.,.,', 'rafinlineparser.ry', 122)
 
 # reduce 113 omitted
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 160)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 160)
   def _reduce_114(val, _values)
      val.join 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 161)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 161)
   def _reduce_115(val, _values)
      val[0] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 164)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 164)
   def _reduce_116(val, _values)
                       base, text = val[1].split("=",2)
 		  @variables ||= {}
@@ -1069,31 +1069,31 @@ module_eval(<<'.,.,', 'rafinlineparser.ry', 164)
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 178)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 178)
   def _reduce_117(val, _values)
      Manuedo.new(val[1]) 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 183)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 183)
   def _reduce_118(val, _values)
      val[0] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 186)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 186)
   def _reduce_119(val, _values)
      val.join 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 187)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 187)
   def _reduce_120(val, _values)
      val[0] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 190)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 190)
   def _reduce_121(val, _values)
               label, title = val[1].split("|",2)
           title ||= label
@@ -1104,25 +1104,25 @@ module_eval(<<'.,.,', 'rafinlineparser.ry', 190)
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 199)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 199)
   def _reduce_122(val, _values)
      val[0] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 201)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 201)
   def _reduce_123(val, _values)
      val.join 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 202)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 202)
   def _reduce_124(val, _values)
      val[0] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 205)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 205)
   def _reduce_125(val, _values)
                       label, title = val[1].split("|",2)
                   title ||= label
@@ -1131,25 +1131,25 @@ module_eval(<<'.,.,', 'rafinlineparser.ry', 205)
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 212)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 212)
   def _reduce_126(val, _values)
      val[0] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 214)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 214)
   def _reduce_127(val, _values)
      val.join 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 215)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 215)
   def _reduce_128(val, _values)
      val[0] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 218)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 218)
   def _reduce_129(val, _values)
                       title, uri = val[1].split("|",2)
                   uri ||= title
@@ -1220,31 +1220,31 @@ module_eval(<<'.,.,', 'rafinlineparser.ry', 218)
 
 # reduce 158 omitted
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 258)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 258)
   def _reduce_159(val, _values)
      val 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 260)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 260)
   def _reduce_160(val, _values)
       Verb.new(val[1])
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 264)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 264)
   def _reduce_161(val, _values)
      Plain.new(val[0]) 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 265)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 265)
   def _reduce_162(val, _values)
       Plain.new([val[0].contents, val[1]]) 
   end
 .,.,
 
-module_eval(<<'.,.,', 'rafinlineparser.ry', 267)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 267)
   def _reduce_163(val, _values)
      val[0] 
   end
@@ -1257,12 +1257,12 @@ end
 end   # class InlineParser
 
   if __FILE__ == $0
-    raf = InlineParser.new
+    mok = InlineParser.new
     src = $stdin.readline
-    nodes = raf.parse(src)
+    nodes = mok.parse(src)
     puts "----- output -----"
     nodes.each do |n|
       puts n.apply
     end
   end
-end # end of module Raf
+end # end of module Mok

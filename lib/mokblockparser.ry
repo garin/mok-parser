@@ -166,7 +166,7 @@ end
 def on_error(token_id, value, stack)
   lineno = @src[0..@no].to_s.split("\n").size
   raise Racc::ParseError,
-        "rafblockpaser: line #{lineno}: syntax error on #{value.inspect}"
+        "mokblockpaser: line #{lineno}: syntax error on #{value.inspect}"
 end
 
 def next_token
@@ -336,27 +336,27 @@ end
 
 ---- header
 require "parserutility"
-require "rafinlineparser.tab"
-require "rafelement"
+require "mokinlineparser.tab"
+require "mokelement"
 require "erb"
 
-module Raf
+module Mok
 
 ---- footer
   if __FILE__ == $0
-    raf = BlockParser.new
+    mok = BlockParser.new
     src = $stdin.readlines
-    nodes = raf.parse(src)
+    nodes = mok.parse(src)
     puts "----- index -----"
-    raf.index.each do |key,val|
+    mok.index.each do |key,val|
       puts key
       val.each do |v| p v end
     end
     puts "----- info -----"
-    p raf.info
+    p mok.info
     puts "----- output -----"
     nodes.each do |n|
       puts n.apply
     end
   end
-end # end of module Raf
+end # end of module Mok

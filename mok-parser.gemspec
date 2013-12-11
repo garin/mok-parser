@@ -1,12 +1,12 @@
 # coding: utf-8
 
 Gem::Specification.new do |spec|
-  spec.name          = "raf-parser"
+  spec.name          = "mok-parser"
   spec.version       = `cat VERSION`
   spec.authors       = ["garin"]
   spec.email         = ["garin54@gmail.com"]
-  spec.description   = %q{raf is simple document format}
-  spec.summary       = %q{raf is simple document format}
+  spec.description   = %q{mok is simple document format}
+  spec.summary       = %q{mok is simple document format}
   spec.homepage      = ""
   spec.license       = "GPLv3"
 
