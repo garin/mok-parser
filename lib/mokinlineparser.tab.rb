@@ -1153,9 +1153,9 @@ module_eval(<<'.,.,', 'mokinlineparser.ry', 218)
   def _reduce_129(val, _values)
                       title, uri = val[1].split("|",2)
                   uri ||= title
-                  if uri.strip[-2,2] == ".%" and ! @options[:extension].nil?
+                  if uri.strip[-2,2] == ".%" and ! @options[:reference_extension].nil?
 		    uri.slice!(-2,2)
-		    uri = "#{uri}#{@options[:extension]}"
+		    uri = "#{uri}#{@options[:reference_extension]}"
 		  end
                   Reference.new([title, uri])
                 
