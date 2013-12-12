@@ -313,6 +313,18 @@ def next_token
         @current_type = :numlist
         [:NUMLIST, $4]
     end
+  when /^\|-.*/			# type = table head
+    # テーブル内であればテーブルヘッダとして無視、そうでなければ普通のPLAINとして扱う
+    if @current_type == :table
+      @no += 1
+      next_token
+    else
+      @current_type = :plain
+      if_current_indent_equal(@line.indent) do
+        puts "b: PLAIN: #{@line.content}" if @view_token_type
+        [:PLAIN, @line.content]
+      end
+    end
   when /^\|.*/ # type = table
     @no += 1
     @current_type = :table
