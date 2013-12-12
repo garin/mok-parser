@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mok-parser (0.2.2)
+    mok-parser (0.3.0)
       mimemagic
 
 GEM
