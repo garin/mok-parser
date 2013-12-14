@@ -16,7 +16,7 @@ module Mok
 
 class InlineParser < Racc::Parser
 
-module_eval(<<'...end mokinlineparser.ry/module_eval...', 'mokinlineparser.ry', 270)
+module_eval(<<'...end mokinlineparser.ry/module_eval...', 'mokinlineparser.ry', 269)
 include ParserUtility
 
 EM_OPEN = '((*'
@@ -265,8 +265,10 @@ end
 
 # reference, media エレメントのリンク用のパスを生成する
 def mok_link_path(path, base_dir = nil)
-  return path if base_dir.nil? or base_dir.empty? # base_dir なし
-  return path if path=~ /^.*:\/\/.*/		    # uri
+  path = path.strip
+  return path if base_dir.nil? or base_dir.empty?     # non base_dir
+  return path if path =~ /^.*:\/\/.*/		      # uri
+  return path if path =~ /^\/.*/ or path =~ /^\.\/.*/ # root or currentdirectory
   File.join(base_dir,path)
 end
 
@@ -896,13 +898,12 @@ module_eval(<<'.,.,', 'mokinlineparser.ry', 72)
 
 module_eval(<<'.,.,', 'mokinlineparser.ry', 74)
   def _reduce_55(val, _values)
-    		   val[0] = mok_link_path(val[0], @options[:media_directory])
-		   val[0]
-		   
+    		     mok_link_path(val[0], @options[:media_directory])
+		
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 78)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 77)
   def _reduce_56(val, _values)
     	     mime = MimeMagic.by_extension(val[1].split(".").last)
 	     unless mime.nil?
@@ -967,19 +968,19 @@ module_eval(<<'.,.,', 'mokinlineparser.ry', 78)
 
 # reduce 82 omitted
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 116)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 115)
   def _reduce_83(val, _values)
      val.join 
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 117)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 116)
   def _reduce_84(val, _values)
      val[0] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 120)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 119)
   def _reduce_85(val, _values)
                       base, text = val[1].split("|",2)
                   text ||= base
@@ -1046,19 +1047,19 @@ module_eval(<<'.,.,', 'mokinlineparser.ry', 120)
 
 # reduce 113 omitted
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 158)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 157)
   def _reduce_114(val, _values)
      val.join 
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 159)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 158)
   def _reduce_115(val, _values)
      val[0] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 162)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 161)
   def _reduce_116(val, _values)
                       base, text = val[1].split("=",2)
 		  @variables ||= {}
@@ -1075,31 +1076,31 @@ module_eval(<<'.,.,', 'mokinlineparser.ry', 162)
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 176)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 175)
   def _reduce_117(val, _values)
      Manuedo.new(val[1]) 
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 181)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 180)
   def _reduce_118(val, _values)
      val[0] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 184)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 183)
   def _reduce_119(val, _values)
      val.join 
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 185)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 184)
   def _reduce_120(val, _values)
      val[0] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 188)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 187)
   def _reduce_121(val, _values)
               label, title = val[1].split("|",2)
           title ||= label
@@ -1110,25 +1111,25 @@ module_eval(<<'.,.,', 'mokinlineparser.ry', 188)
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 197)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 196)
   def _reduce_122(val, _values)
      val[0] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 199)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 198)
   def _reduce_123(val, _values)
      val.join 
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 200)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 199)
   def _reduce_124(val, _values)
      val[0] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 203)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 202)
   def _reduce_125(val, _values)
                       label, title = val[1].split("|",2)
                   title ||= label
@@ -1137,25 +1138,25 @@ module_eval(<<'.,.,', 'mokinlineparser.ry', 203)
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 210)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 209)
   def _reduce_126(val, _values)
      val[0] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 212)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 211)
   def _reduce_127(val, _values)
      val.join 
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 213)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 212)
   def _reduce_128(val, _values)
      val[0] 
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 216)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 215)
   def _reduce_129(val, _values)
                       title, uri = val[1].split("|",2)
                   uri ||= title
@@ -1226,31 +1227,31 @@ module_eval(<<'.,.,', 'mokinlineparser.ry', 216)
 
 # reduce 158 omitted
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 256)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 255)
   def _reduce_159(val, _values)
      val 
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 258)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 257)
   def _reduce_160(val, _values)
       Verb.new(val[1])
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 262)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 261)
   def _reduce_161(val, _values)
      Plain.new(val[0]) 
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 263)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 262)
   def _reduce_162(val, _values)
       Plain.new([val[0].contents, val[1]]) 
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 265)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 264)
   def _reduce_163(val, _values)
      val[0] 
   end

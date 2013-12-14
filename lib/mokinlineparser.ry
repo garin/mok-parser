@@ -514,8 +514,10 @@ end
 
 # reference, media エレメントのリンク用のパスを生成する
 def mok_link_path(path, base_dir = nil)
-  return path if base_dir.nil? or base_dir.empty? # base_dir なし
-  return path if path=~ /^.*:\/\/.*/		    # uri
+  path = path.strip
+  return path if base_dir.nil? or base_dir.empty?     # non base_dir
+  return path if path =~ /^.*:\/\/.*/		      # uri
+  return path if path =~ /^\/.*/ or path =~ /^\.\/.*/ # root or currentdirectory
   File.join(base_dir,path)
 end
 
