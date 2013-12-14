@@ -219,6 +219,7 @@ class InlineParser
 		    uri.slice!(-2,2)
 		    uri = "#{uri}#{@options[:reference_extension]}"
 		  end
+                  uri = mok_link_path(uri, @options[:reference_base_directory])
                   Reference.new([title, uri])
                 }
   # --- reference : end

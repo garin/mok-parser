@@ -16,7 +16,7 @@ module Mok
 
 class InlineParser < Racc::Parser
 
-module_eval(<<'...end mokinlineparser.ry/module_eval...', 'mokinlineparser.ry', 269)
+module_eval(<<'...end mokinlineparser.ry/module_eval...', 'mokinlineparser.ry', 270)
 include ParserUtility
 
 EM_OPEN = '((*'
@@ -1164,6 +1164,7 @@ module_eval(<<'.,.,', 'mokinlineparser.ry', 215)
 		    uri.slice!(-2,2)
 		    uri = "#{uri}#{@options[:reference_extension]}"
 		  end
+                  uri = mok_link_path(uri, @options[:reference_base_directory])
                   Reference.new([title, uri])
                 
   end
@@ -1227,31 +1228,31 @@ module_eval(<<'.,.,', 'mokinlineparser.ry', 215)
 
 # reduce 158 omitted
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 255)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 256)
   def _reduce_159(val, _values)
      val 
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 257)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 258)
   def _reduce_160(val, _values)
       Verb.new(val[1])
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 261)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 262)
   def _reduce_161(val, _values)
      Plain.new(val[0]) 
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 262)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 263)
   def _reduce_162(val, _values)
       Plain.new([val[0].contents, val[1]]) 
   end
 .,.,
 
-module_eval(<<'.,.,', 'mokinlineparser.ry', 264)
+module_eval(<<'.,.,', 'mokinlineparser.ry', 265)
   def _reduce_163(val, _values)
      val[0] 
   end
