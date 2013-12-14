@@ -72,10 +72,7 @@ class InlineParser
 
   media_strings :  media_strings media_string { val.join }
                 |  media_string {
-		     unless @options[:media_directory].nil? || @options[:media_directory].empty?
-  		       val[0] = File.join(@options[:media_directory],val[0]) unless val[0] =~ /^.*:\/\/.*/
-		     end
-		     val[0]
+		     mok_link_path(val[0], @options[:media_directory])
 		}
   media    : MEDIA_OPEN media_strings MEDIA_CLOSE {
 	     mime = MimeMagic.by_extension(val[1].split(".").last)
@@ -515,6 +512,13 @@ def next_token
   end
 end
 
+# reference, media エレメントのリンク用のパスを生成する
+def mok_link_path(path, base_dir = nil)
+  return path if base_dir.nil? or base_dir.empty? # base_dir なし
+  return path if path=~ /^.*:\/\/.*/		    # uri
+  File.join(base_dir,path)
+end
+
 ---- header
 require "parserutility"
 require 'strscan'
@@ -523,6 +527,7 @@ require 'erb'
 require 'mokelement'
 
 module Mok
+
 ---- footer
   if __FILE__ == $0
     mok = InlineParser.new
