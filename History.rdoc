@@ -1,3 +1,8 @@
+== 0.3.1 2013-12-14
+* new: Referenceエレメントにreference_base_directoryオプションを追加
+* change: Mediaエレメントの media_directory オプションを media_base_directory
+* パスが ルート・カレントディレクトリだった時に *_base_directory を無視するように変更
+
 == 0.3.0 2013-12-12
 * プロジェクト名を raf-parser から mok-parser に変更
 
