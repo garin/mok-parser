@@ -898,7 +898,7 @@ module_eval(<<'.,.,', 'mokinlineparser.ry', 72)
 
 module_eval(<<'.,.,', 'mokinlineparser.ry', 74)
   def _reduce_55(val, _values)
-    		     mok_link_path(val[0], @options[:media_directory])
+    		     mok_link_path(val[0], @options[:media_base_directory])
 		
   end
 .,.,
