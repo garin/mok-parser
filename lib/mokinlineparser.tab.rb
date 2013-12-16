@@ -116,6 +116,8 @@ def parse(src)
 end
 def initialize(options = {})
   @options = options
+  @variables = options[:variables]
+  @variables ||= {}
   @index = {}
 end
 attr_reader :index
