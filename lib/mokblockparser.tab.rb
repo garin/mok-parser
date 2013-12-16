@@ -38,6 +38,7 @@ end
 
 
 def initialize(options = {})
+  @options = options
   @inline_parser = InlineParser.new(options)
   @metadata = {}
   @inline_index = @inline_parser.index
@@ -50,6 +51,9 @@ def parse(src)
   @no = 0
   # srcをerbで処理
   src = ERB.new(src.join,4).result(binding.taint).split("\n").map {|s| "#{s}\n"}
+
+  # 部分テンプレート(partial)
+  src = insert_partial(src)
 
   @src = Array(src)
   @line = Line.new("")
@@ -253,6 +257,26 @@ def if_current_indent_equal(ident)
     puts "b: DEDENT" if @view_token_type
     [:DEDENT, :DEDENT]
   end
+end
+
+def insert_partial(src)
+  src.map do |line|
+    if line =~ /^\(\(\!(.*?)\!\)\)/
+      file = File.join(File.dirname($1), "_#{File.basename($1)}.mok")
+      file_path = file
+      file_path = File.join(File.dirname(@options[:src_file]),file) if @options[:src_file]
+      unless @options[:partial_base_directory].nil?
+        file_path = File.join(@options[:partial_base_directory],file) unless @options[:partial_base_directory].empty?
+      end
+      if File.exist?(file_path)
+        File.open(file_path).readlines
+      else
+        ["((*Warning*)): [partial] #{file} is not found\n"]
+      end
+    else
+      line
+    end
+  end.flatten
 end
 
 ...end mokblockparser.ry/module_eval...
