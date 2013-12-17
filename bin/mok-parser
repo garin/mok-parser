@@ -10,7 +10,10 @@ opt = OptionParser.new do |opt|
   opt.version = Mok::VERSION
   opt.release = Mok::RELEASE
   opt.banner = <<EOL
-"mok" is simple document format.
+#{opt.ver}
+
+== Description
+"mok-parser" is mok document parser by racc.
 Read more: https://github.com/garin/mok-parser
 EOL
 end
