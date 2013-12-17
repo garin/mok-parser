@@ -374,8 +374,8 @@ def insert_partial(src)
       file = File.join(File.dirname($1), "_#{File.basename($1)}.mok")
       file_path = file
       file_path = File.join(File.dirname(@options[:src_file]),file) if @options[:src_file]
-      unless @options[:partial_base_directory].nil?
-        file_path = File.join(@options[:partial_base_directory],file) unless @options[:partial_base_directory].empty?
+      unless @options[:partial_directory].nil?
+        file_path = File.join(@options[:partial_directory],file) unless @options[:partial_directory].empty?
       end
       if File.exist?(file_path)
         File.open(file_path).readlines

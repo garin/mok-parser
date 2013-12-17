@@ -900,7 +900,7 @@ module_eval(<<'.,.,', 'mokinlineparser.ry', 72)
 
 module_eval(<<'.,.,', 'mokinlineparser.ry', 74)
   def _reduce_55(val, _values)
-    		     mok_link_path(val[0], @options[:media_base_directory])
+    		     mok_link_path(val[0], @options[:media_directory])
 		
   end
 .,.,
@@ -1166,7 +1166,7 @@ module_eval(<<'.,.,', 'mokinlineparser.ry', 215)
 		    uri.slice!(-2,2)
 		    uri = "#{uri}#{@options[:reference_extension]}"
 		  end
-                  uri = mok_link_path(uri, @options[:reference_base_directory])
+                  uri = mok_link_path(uri, @options[:reference_directory])
                   Reference.new([title, uri])
                 
   end

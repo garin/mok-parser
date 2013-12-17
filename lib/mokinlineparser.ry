@@ -72,7 +72,7 @@ class InlineParser
 
   media_strings :  media_strings media_string { val.join }
                 |  media_string {
-		     mok_link_path(val[0], @options[:media_base_directory])
+		     mok_link_path(val[0], @options[:media_directory])
 		}
   media    : MEDIA_OPEN media_strings MEDIA_CLOSE {
 	     mime = MimeMagic.by_extension(val[1].split(".").last)
@@ -219,7 +219,7 @@ class InlineParser
 		    uri.slice!(-2,2)
 		    uri = "#{uri}#{@options[:reference_extension]}"
 		  end
-                  uri = mok_link_path(uri, @options[:reference_base_directory])
+                  uri = mok_link_path(uri, @options[:reference_directory])
                   Reference.new([title, uri])
                 }
   # --- reference : end
