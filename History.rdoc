@@ -1,3 +1,7 @@
+== 0.3.2 2013-12-20
+* new: 部分テンプレート(partial)機能を試験的に追加
+* change: _base_directory オプションを *_directory に変更
+
 == 0.3.1 2013-12-14
 * new: Referenceエレメントにreference_base_directoryオプションを追加
 * change: Mediaエレメントの media_directory オプションを media_base_directory
