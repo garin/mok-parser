@@ -1068,7 +1068,7 @@ module_eval(<<'.,.,', 'mokinlineparser.ry', 161)
 		  @variables[base] = text unless text.nil?
 		  value = @variables[base]
 		  unless value.nil?
-		    parser = InlineParser.new
+		    parser = InlineParser.new(@options)
  		    value = parser.parse(value).map do |n| n.apply end
 		  else	# 変数が未定義
 		    value = base
