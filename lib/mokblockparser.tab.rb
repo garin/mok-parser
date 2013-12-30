@@ -48,6 +48,7 @@ end
 attr_reader :metadata, :inline_index, :index
 
 def parse(src)
+  src = ["# No Document"] if src.size == 0 # srcが空の時の対応
   @no = 0
   # srcをerbで処理
   if @options[:erb]
