@@ -157,8 +157,11 @@ end
 attr_reader :metadata, :inline_index, :index
 
 def parse(src)
-  src = ["# No Document"] if src.size == 0 # srcが空の時の対応
   @no = 0
+
+  # srcが空の時の対応
+  src = ["# No Document"] if src.size == 0
+
   # srcをerbで処理
   if @options[:erb]
     src = ERB.new(src.join,4).result(binding.taint).split("\n").map {|s| "#{s}\n"}
