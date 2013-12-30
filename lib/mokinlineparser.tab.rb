@@ -107,12 +107,23 @@ other_re_mode = Regexp::MULTILINE
 OTHER_RE = Regexp.new(
                       "\\A.+?(?=#{Regexp.quote(EM_OPEN)}|#{Regexp.quote(EM_CLOSE)}|#{Regexp.quote(ITALIC_OPEN)}|#{Regexp.quote(ITALIC_CLOSE)}|#{Regexp.quote(STRIKE_OPEN)}|#{Regexp.quote(STRIKE_CLOSE)}|#{Regexp.quote(CODE_OPEN)}|#{Regexp.quote(CODE_CLOSE)}|#{Regexp.quote(KBD_OPEN)}|#{Regexp.quote(KBD_CLOSE)}|#{Regexp.quote(FOOTNOTE_OPEN)}|#{Regexp.quote(FOOTNOTE_CLOSE)}|#{Regexp.quote(RUBY_OPEN)}|#{Regexp.quote(RUBY_CLOSE)}|#{Regexp.quote(VARIABLE_OPEN)}|#{Regexp.quote(VARIABLE_CLOSE)}|#{Regexp.quote(MEDIA_OPEN)}|#{Regexp.quote(MEDIA_CLOSE)}|#{Regexp.quote(LABEL_OPEN)}|#{Regexp.quote(LABEL_CLOSE)}|#{Regexp.quote(LABEL_LINK_OPEN)}|#{Regexp.quote(LABEL_LINK_CLOSE)}|#{Regexp.quote(LABEL_HTML_OPEN)}|#{Regexp.quote(LABEL_HTML_CLOSE)}|#{Regexp.quote(REFERENCE_OPEN)}|#{Regexp.quote(REFERENCE_CLOSE)}|#{Regexp.quote(REFERENCE_HTML_OPEN)}|#{Regexp.quote(REFERENCE_HTML_CLOSE)}|#{Regexp.quote(MANUEDO_OPEN)}|#{Regexp.quote(MANUEDO_CLOSE)}|#{Regexp.quote(VERB_OPEN)}|#{Regexp.quote(VERB_CLOSE)})", other_re_mode)
 
-def parse(src)
+def on_error(token_id, value, stack)
+
+  raise Racc::ParseError,
+        "mokinlinepaser: line #{@lineno} in document: syntax error on '#{stack[0][0].contents}#{stack[1]}'"
+end
+
+def parse(src, lineno = "?")
   @src = StringScanner.new(Array(src).join)
+  @lineno = lineno
   @pre = ""
   @@yydebug = false
   @view_token_type = false
-  do_parse
+#  begin
+    do_parse
+#  rescue Racc::ParseError
+#    puts "Racc::ParseError desu"
+#  end
 end
 def initialize(options = {})
   @options = options

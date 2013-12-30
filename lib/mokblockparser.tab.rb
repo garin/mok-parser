@@ -574,7 +574,7 @@ module_eval(<<'.,.,', 'mokblockparser.ry', 36)
 
 module_eval(<<'.,.,', 'mokblockparser.ry', 49)
   def _reduce_16(val, _values)
-     Paragraph.new @inline_parser.parse(val) 
+     Paragraph.new @inline_parser.parse(val, @no) 
   end
 .,.,
 
@@ -595,7 +595,7 @@ module_eval(<<'.,.,', 'mokblockparser.ry', 56)
                      if val[1].nil?
                    lines = [Plain.new("")]
                  else
-                   lines = @inline_parser.parse(val[1])
+                   lines = @inline_parser.parse(val[1], @no)
                  end
                  Desc.new([val[0], lines])
                
@@ -636,7 +636,7 @@ module_eval(<<'.,.,', 'mokblockparser.ry', 74)
 
 module_eval(<<'.,.,', 'mokblockparser.ry', 78)
   def _reduce_26(val, _values)
-     qu = val[0].strip  ; Quote.new(@inline_parser.parse(qu)) unless qu.empty? 
+     qu = val[0].strip  ; Quote.new(@inline_parser.parse(qu, @no)) unless qu.empty? 
   end
 .,.,
 
@@ -684,13 +684,13 @@ module_eval(<<'.,.,', 'mokblockparser.ry', 91)
 
 module_eval(<<'.,.,', 'mokblockparser.ry', 93)
   def _reduce_34(val, _values)
-    [PlainTextBlock.new(@inline_parser.parse(val[0]))]
+    [PlainTextBlock.new(@inline_parser.parse(val[0], @no))]
   end
 .,.,
 
 module_eval(<<'.,.,', 'mokblockparser.ry', 94)
   def _reduce_35(val, _values)
-     val[0] << PlainTextBlock.new(@inline_parser.parse(val[1])) 
+     val[0] << PlainTextBlock.new(@inline_parser.parse(val[1],@no)) 
   end
 .,.,
 
@@ -750,13 +750,13 @@ module_eval(<<'.,.,', 'mokblockparser.ry', 110)
 
 module_eval(<<'.,.,', 'mokblockparser.ry', 112)
   def _reduce_45(val, _values)
-     [PlainTextBlock.new(@inline_parser.parse(val[0]))] 
+     [PlainTextBlock.new(@inline_parser.parse(val[0],@no))] 
   end
 .,.,
 
 module_eval(<<'.,.,', 'mokblockparser.ry', 113)
   def _reduce_46(val, _values)
-     val[0] << PlainTextBlock.new(@inline_parser.parse(val[1])) 
+     val[0] << PlainTextBlock.new(@inline_parser.parse(val[1],@no)) 
   end
 .,.,
 

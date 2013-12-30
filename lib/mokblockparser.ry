@@ -47,7 +47,7 @@ class BlockParser
                         @index[:head] << {:title => title, :level => level, :index => @head_index.to_s}
                         HeadLine.new([level, title, @index[:head].size, @head_index.to_s]) }
   # ----- paragraph
-  paragraph : plain_texts { Paragraph.new @inline_parser.parse(val) }
+  paragraph : plain_texts { Paragraph.new @inline_parser.parse(val, @no) }
 
   plain_texts : PLAIN { val[0] }
               | plain_texts PLAIN { val[0] + val[1] }
@@ -57,7 +57,7 @@ class BlockParser
                  if val[1].nil?
                    lines = [Plain.new("")]
                  else
-                   lines = @inline_parser.parse(val[1])
+                   lines = @inline_parser.parse(val[1], @no)
                  end
                  Desc.new([val[0], lines])
                }
@@ -76,7 +76,7 @@ class BlockParser
 
   # ----- preformat end
   # ----- quote
-  quote_block : quotes { qu = val[0].strip  ; Quote.new(@inline_parser.parse(qu)) unless qu.empty? }
+  quote_block : quotes { qu = val[0].strip  ; Quote.new(@inline_parser.parse(qu, @no)) unless qu.empty? }
 
   quotes      : QUOTE { val[0] }
               | quotes QUOTE { val[0] + val[1] }
@@ -91,8 +91,8 @@ class BlockParser
 
   itemlist_indent_blocks : INDENT itemlist_blocks DEDENT { val }
 
-  itemlists : itemlistitems {[PlainTextBlock.new(@inline_parser.parse(val[0]))]}
-            | itemlists itemlistitems { val[0] << PlainTextBlock.new(@inline_parser.parse(val[1])) }
+  itemlists : itemlistitems {[PlainTextBlock.new(@inline_parser.parse(val[0], @no))]}
+            | itemlists itemlistitems { val[0] << PlainTextBlock.new(@inline_parser.parse(val[1],@no)) }
 
   itemlistitems : ITEMLIST { val[0] }
                 | ITEMLIST itemlist_continues { val[0] + val[1] }
@@ -110,8 +110,8 @@ class BlockParser
 
   numlist_indent_blocks : INDENT numlist_blocks DEDENT { val }
 
-  numlists : NUMLIST { [PlainTextBlock.new(@inline_parser.parse(val[0]))] }
-           | numlists NUMLIST { val[0] << PlainTextBlock.new(@inline_parser.parse(val[1])) }
+  numlists : NUMLIST { [PlainTextBlock.new(@inline_parser.parse(val[0],@no))] }
+           | numlists NUMLIST { val[0] << PlainTextBlock.new(@inline_parser.parse(val[1],@no)) }
 
   # ----- numlist end
 
