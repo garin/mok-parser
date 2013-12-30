@@ -50,7 +50,9 @@ attr_reader :metadata, :inline_index, :index
 def parse(src)
   @no = 0
   # srcをerbで処理
-  src = ERB.new(src.join,4).result(binding.taint).split("\n").map {|s| "#{s}\n"}
+  if @options[:erb]
+    src = ERB.new(src.join,4).result(binding.taint).split("\n").map {|s| "#{s}\n"}
+  end
 
   # 部分テンプレート(partial)
   src = insert_partial(src)
